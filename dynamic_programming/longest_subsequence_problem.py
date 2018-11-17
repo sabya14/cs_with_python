@@ -23,4 +23,5 @@ def longest_subsequence_problem(string_a, string_b):
 
 
 if __name__ == "__main__":
-	print(longest_subsequence_problem("AGGTAB", "GXTXAYB"))
+	print(longest_subsequence_problem("AGGTAB", "GXTXAYB"))\
+
