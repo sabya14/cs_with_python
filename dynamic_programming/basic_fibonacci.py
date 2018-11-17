@@ -1,6 +1,14 @@
 __author__ = "Sabyaschi Nandy sabya.nandy14@gmail.com"
 """
 See the usefulness of dynamic programming through a basic solution for fibonacci series
+
+KEY POINTS-1. Understand whether the problem is of DP or not.
+				For that try to look for things - Does it overlapping subproblems property.
+												- Or optimal subtructure property.
+			2. After figuring that your, try to formulated a recurrence relation.
+			3. Find out what to do in every state.
+			4. Using memoization to store result of each state
+			5. Code it. 											
 """
 
 
