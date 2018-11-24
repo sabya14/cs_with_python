@@ -1,4 +1,10 @@
 def longest_subsequence_problem(string_a, string_b):
+	"""
+	A DP implementation for finding longest common sub sequence
+	:param string_a: String a
+	:param string_b: String b
+	:return: The longest common sub sequence
+	"""
 	# Get the length of the strings
 	len_a = len(string_a)
 	len_b = len(string_b)
@@ -23,5 +29,6 @@ def longest_subsequence_problem(string_a, string_b):
 
 
 if __name__ == "__main__":
-	print(longest_subsequence_problem("AGGTAB", "GXTXAYB"))\
+	print(longest_subsequence_problem("AGGTAB", "GXTXAYB"))
+
 
