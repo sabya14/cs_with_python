@@ -35,6 +35,7 @@ def knapsack_0_1(weights_list, values_list, weight):
 			else:
 				memo[i][j] = memo[i][j - 1]
 				bag[i][j] = bag[i][j-1]
+
 	print(*bag, sep="\n")
 	print("******")
 	return memo
