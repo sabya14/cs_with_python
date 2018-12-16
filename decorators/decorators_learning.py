@@ -1,25 +1,45 @@
-def outer_function():
-	message = 'Hi'
+def decorator_function(original_function):
+	def wrapper_function():
+		print("Check for cache here")
+		return original_function()
 
-	def inner_function():
-		print(message)
-	return inner_function()
-
-
-outer_function()
+	return wrapper_function
 
 
-def outer_function_1():
-	message = 'Hi'
-
-	def inner_function():
-		print(message)
-	return inner_function
+@decorator_function
+def process_report():
+	print("Processing Report")
 
 
-# My func is a closure, that is it remembers the variable message even after outer function has finished
-# executing.
-my_func = outer_function_1()
-my_func()
-my_func()
-my_func()
+def decorator_function_with_args(original_function):
+	def wrapper_function(*args, **kwargs):
+		print("Decorators with args, Check for cache here")
+		return original_function(*args, **kwargs)
+
+	return wrapper_function
+
+
+@decorator_function_with_args
+def process_report_with_args(report_id):
+	print("Processing Report", report_id)
+
+
+class LearnDecorator:
+
+	def __init__(self, original_function):
+		self.original_function = original_function
+
+	def __call__(self, *args, **kwargs):
+		print('Do caching here')
+		return self.original_function(*args, **kwargs)
+
+
+@LearnDecorator
+def class_decorator_test(report_id):
+	print("Generate Report", report_id)
+
+
+if __name__ == '__main__':
+	process_report()
+	process_report_with_args(123)
+	class_decorator_test(1234)
