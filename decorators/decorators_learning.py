@@ -1,6 +1,10 @@
+import inspect
+
+
 def decorator_function(original_function):
 	def wrapper_function():
 		print("Check for cache here")
+		# define your process
 		return original_function()
 
 	return wrapper_function
@@ -26,11 +30,12 @@ def process_report_with_args(report_id):
 
 class LearnDecorator:
 
-	def __init__(self, original_function):
+	def __init__(self, original_function, *args, **kwargs):
 		self.original_function = original_function
+		print(args, kwargs)
 
 	def __call__(self, *args, **kwargs):
-		print('Do caching here')
+		print(*args)
 		return self.original_function(*args, **kwargs)
 
 
