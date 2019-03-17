@@ -28,7 +28,8 @@ class Heap:
 
     def __init__(self):
         self.root = None
-        self.last_insert = None
+        self.last_element = None  # Maintain the last element in the heap, to quicken removal
+        self.last_element_level = None  # level is useful when bubbling down after removal
 
     def find_insert_point(self, node, level):
         # Recursively find the next best position to insert
@@ -64,6 +65,7 @@ class Heap:
         return self.in_order(self.root)
 
     def bubble_up(self, node):
+        # Bubble up a newly inserted to its correct position
         if node.parent is not None and (node.value > node.parent.value):
             temp = node.parent.value
             node.parent.value = node.value
@@ -72,81 +74,111 @@ class Heap:
         else:
             return
 
-    def bubble_down(self, node):
+    def bubble_down(self, node, level):
+        # Bubble up a newly inserted root to its correct position
         if node is None:
             return
-        if node.left is not None and (node.value < node.left.value):
-            temp = node.left.value
-            node.left.value = node.value
-            node.value = temp
-        if node.right is not None and (node.value < node.right.value):
-            temp = node.right.value
-            node.right.value = node.value
-            node.value = temp
+        level = level + 1
+        if node.left is not None:
+            if node.value < node.left.value:
+                # Swap value if condition satifies
+                temp = node.left.value
+                node.left.value = node.value
+                node.value = temp
+            if level >= self.last_element_level:
+                # If this element level is more than the last_element_level, then only change this
+                self.last_element = node.left
+                self.last_element_level = level
 
-        self.bubble_down(node.right)
-        self.bubble_down(node.left)
+        if node.right is not None:
+            if node.value < node.right.value:
+                temp = node.right.value
+                node.right.value = node.value
+                node.value = temp
+            if level >= self.last_element_level:
+                # If this element level is more than the last_element_level, then only change this
+                self.last_element = node.right
+                self.last_element_level = level
+
+        # recursively boil down
+        self.bubble_down(node.left, level)
+        self.bubble_down(node.right, level)
 
     def insert(self, value):
         if not self.root:
             self.root = Node(value)
-            self.last_insert = self.root
+            self.last_element = self.root
+            self.last_element_level = 0
             return
         # Find the next blank position to insert at
         node, pos, level = self.find_insert_point(self.root, 0)
         if pos == 'left':
             node.left = Node(value, parent=node)
-            # Always keep reference to last inserted node
-            self.last_insert = node.left
+            # Always keep reference to last_element node
+            self.last_element = node.left
+            self.last_element_level = level
             self.bubble_up(node.left)
         else:
             node.right = Node(value, parent=node)
-            # Always keep reference to last inserted node
-            self.last_insert = node.right
+            # Always keep reference to last_element node
+            self.last_element = node.right
+            self.last_element_level = level
             self.bubble_up(node.right)
 
-    def poll(self):
-        if self.last_insert.parent:
-            # Here we remove the last inserted element from its parent node.
-            # Find the parent node of the last element. Then make its appropriate child none.
-            # First try and check if the last inserted element was in the right node,
-            # We try from right because the heap is always a complete node.
-            # If not in right node it must be in the left node.
-            parent = self.last_insert.parent
-            if parent.right:
-                parent.right = None
-            else:
-                parent.right = None
-                parent.left = None
-
-        # Now we make the last inserted element its root node.
-        to_return = self.root
-        # New root defined
-        self.root = self.last_insert
-        self.root.parent = None
-        # Give left and right of older root to new root
-        self.root.left = to_return.left
-        self.root.right = to_return.right
-
-        # Give the new root to the children of the older root
-        self.root.left.parent = self.root
-        self.root.right.parent = self.root
-        print("Before bubble down", self)
+    def heapify(self):
         self.bubble_down(self.root)
+
+    def remove_node(self, node):
+        # Replace value with last element value
+        node.value = self.last_element.value
+        last_element_parent = self.last_element.parent
+        if last_element_parent.right == self.last_element:
+            last_element_parent.right = None
+        if last_element_parent.left == self.last_element:
+            last_element_parent.left = None
+        return node
+
+    def poll(self):
+        if self.root is None:
+            return ValueError("Heap is empty")
+        to_return = self.root
+        self.root = self.remove_node(self.root)
+        self.bubble_down(self.root, 0)
+        return to_return
+
+    def find_node_with_value(self, node, value):
+        if node is None:
+            return False
+        if node.value == value:
+            return node
+        node_l = self.find_node_with_value(node.left, value)
+        if node_l:
+            return node_l
+        node_r = self.find_node_with_value(node.right, value)
+        if node_r:
+            return node_r
+        return False
+
+    def remove(self, value):
+        if self.root is None:
+            return ValueError("Heap is empty")
+        node = self.find_node_with_value(self.root, value)
+        to_return = node
+        self.remove_node(node)
+        self.bubble_down(self.root, 0)
         return to_return
 
 
 if __name__ == "__main__":
     b_tree = Heap()
-    b_tree.insert(0)
     b_tree.insert(1)
-    b_tree.insert(4)
-    b_tree.insert(5)
     b_tree.insert(2)
     b_tree.insert(3)
-    print(b_tree.last_insert)
-    print("Actual", b_tree)
-    print(b_tree.poll())
-    print("After polling", b_tree)
+    b_tree.insert(4)
     b_tree.insert(5)
-    print("Should be like actual again", b_tree)
+    b_tree.insert(6)
+    b_tree.insert(7)
+    print(b_tree.remove(3))
+    print(b_tree)
+    print(b_tree.remove(7))
+    print(b_tree)
