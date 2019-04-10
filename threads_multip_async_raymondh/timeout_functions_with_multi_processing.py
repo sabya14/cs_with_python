@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 
-  
+
 def foo(n, send):
     for i in range(8):
         print("Counting")
