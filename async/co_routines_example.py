@@ -1,4 +1,7 @@
 import datetime
+"""
+make a co routine, which read a file line by line, and find out the word count of a specific word in it
+"""
 
 
 def co_routine(fn):
