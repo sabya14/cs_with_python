@@ -54,7 +54,7 @@ def read_line(read_lines, word_to_search_list):
     # Now we call the fan out function, what it does is for every line, it call the multiple word grep
     fan_out_fn = fan_out(fan_out_children)
     for line in read_lines:
-        fan_out_fn.send(line)  # Send data to grep co routine 
+        fan_out_fn.send(line)  # Send data to grep co routine
 
 
 def word_count(file_name, word_to_search_list):
