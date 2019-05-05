@@ -9,7 +9,7 @@ import psycopg2
 config = {
     "user": "sabyasachi",
     "password": "qweasdzxc",
-    "host": "localhost",
+    "host": "test.com",
     "database": "explore_data",
     "database_type": "postgres"
 }
@@ -22,13 +22,8 @@ def create_postgres_connection(config, return_dict=None, ns=None):
     database = config['database']
     username = config['user']
     password = config['password']
-    connection = psycopg2.connect(host=host, database=database, user=username, password=password)
-    print(return_dict)
-    if return_dict is not None:
-        return_dict['connection'] = connection
-    if ns:
-        ns.result = connection
-    print("ID", id(connection))
+    connection = psycopg2.connect(host=host, database=database, user=username, password=password, connect_timeout=3)
+    return connection
 
 
 def run_with_limited_time(func, args, kwargs, time):
@@ -57,11 +52,12 @@ def run_with_limited_time_thread(func, args, kwargs, time):
     """
     p = threading.Thread(target=func, args=args, kwargs=kwargs)
     p.start()
-    p.join(timeout=5)
+    p.join(timeout=time)
     if p.is_alive():
         print("TIme out")
     else:
         print("Get Value")
+    del p
     return True
 
 
@@ -73,9 +69,8 @@ def objects_by_id(id_):
 
 
 if __name__ == '__main__':
-    result = {}
-    run_with_limited_time_thread(create_postgres_connection, (config, result), {}, 3)
-    print(type(list(result.values())[0]))
+    connection = create_postgres_connection(config)
+    print("COnnection", connection)
     # obj = objects_by_id(list(result.values())[0])
     # print("Obj", obj)
 

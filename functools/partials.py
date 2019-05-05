@@ -11,8 +11,6 @@ def show_details(name, func, is_partial=False):
     if not is_partial:
         print("Not partial")
         print(func.__name__)
-    if not is_partial:
-        print(func.__name__)
     else:
         print("Partial")
         try:
@@ -31,7 +29,7 @@ test(3)
 
 # Now we create a function with smaller args than the original test function.
 test_with_fixed_a = functools.partial(test, 1)
-test_with_fixed_a(b=12)
+test_with_fixed_a()
 
 # Now we create a function with smaller args than the original test function.
 test_with_fixed_a_and_update_wrapper = functools.partial(test, 100)
