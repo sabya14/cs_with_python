@@ -1,15 +1,16 @@
 from functools import partial
 
 
-def interest(p, r, t):
-    print(p, r, t)
-    return p * r * t / 100
+def currency_scaler(number, factor):
+    return number * factor
 
 
-interest_rate_10_year_1 = partial(interest, r=10, t=1)
-interest_rate_10_year_3 = partial(interest, r=10, t=2)
-interest_rate_10_year_5 = partial(interest, r=10, t=3)
+def usd_to_rupees(number):
+    return currency_scaler(number, 70)
 
-principal_list = [100, 200, 300]
-print(list(map(lambda x: interest_rate_10_year_1(x), principal_list)))
 
+def pound_to_rupees(number):
+    return currency_scaler(number, 90)
+
+
+amount_list = [100, 200, 300]
