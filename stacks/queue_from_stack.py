@@ -6,9 +6,10 @@ class Stack:
         Initialize the stacks with zero, we have to stacks.. one normal.. and one will have always
         have the min value in the top
     """
-    stack = [-1 for i in range(MAX_SIZE)]
-    min_stack = [-1 for i in range(MAX_SIZE)]
-    index = -1
+    def __init__(self):
+        self.stack = [-1 for i in range(MAX_SIZE)]
+        self.min_stack = [-1 for i in range(MAX_SIZE)]
+        self.index = -1
 
     def is_full(self):
         """
@@ -23,6 +24,8 @@ class Stack:
         """
         if self.index == -1:
             return True
+        else:
+            return False
 
     def push(self, item):
         """
@@ -73,21 +76,33 @@ class Queue:
             while not self.stack_b.is_empty():
                 element = self.stack_b.pop()
                 self.stack_a.push(element)
-        print("Pushing")
         self.stack_a.push(data)
 
     def pop(self):
         if self.stack_a.is_empty():
-            return "Cant pop"
+            if not self.stack_b.is_empty():
+                return self.stack_b.pop()
+            else:
+                return "Cant pop"
         else:
-            while not self.stack_b.is_empty():
+            while not self.stack_a.is_empty():
                 element = self.stack_a.pop()
                 self.stack_b.push(element)
+
         return self.stack_b.pop()
 
 
 q = Queue()
+q.push(12)
 q.push(1)
 q.push(2)
 q.push(3)
-q.pop()
+print(q.pop())
+print(q.pop())
+q.push(11)
+q.push(33)
+print(q.pop())
+print(q.pop())
+print(q.pop())
+print(q.pop())
+print(q.pop())
