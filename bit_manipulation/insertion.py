@@ -11,10 +11,8 @@ def insertions(n, m, i, j):
     right_mask = (1 << i) - 1  # produces 0...011
     left_mask = -1 << j + 1  # -1 is basically -1b1111111111111,<< j -> 11110000, if j is 4
     full_mask = left_mask | right_mask  # merging them
-    print(bin(full_mask), bin(left_mask), bin(right_mask))
     n_cleared = n & full_mask  # Clearing using and
     result = n_cleared | m_shifted  # merge them
-    print(bin(result))
     return result
 
 
