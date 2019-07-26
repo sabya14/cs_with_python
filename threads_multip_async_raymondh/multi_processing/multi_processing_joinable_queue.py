@@ -10,8 +10,9 @@ FUZZ = True
 
 
 def fuzz():
-    if FUZZ:
-        time.sleep(random.random())
+    pass
+    # if FUZZ:
+    #     time.sleep(random.random())
 
 
 class Consumer(multiprocessing.Process):
@@ -50,7 +51,7 @@ class MyProcess:
         fuzz()
         process_name = multiprocessing.current_process().name
         fuzz()
-        return f"Processing in {process_name} for {self.name}"
+        return f"Processing in {process_name} for {self.name} completed"
 
 
 if __name__ == "__main__":
