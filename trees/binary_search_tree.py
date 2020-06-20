@@ -29,22 +29,23 @@ class BinarySearchTree:
             result.append(current.info)
             self.parse(current.right, result)
 
-    def add_to_node(self, node, element):
-        if node:
-            if element < node.info:
-                if not node.left:
-                    node.left = Node(element)
-                else:
-                    self.add_to_node(node.left, element)
-            if element > node.info:
-                if not node.right:
-                    node.right = Node(element)
-                else:
-                    self.add_to_node(node.right, element)
-
     def add(self, element):
         if not self.root:
             self.root = Node(element)
         else:
             current = self.root
-            self.add_to_node(current, element)
+            while True:
+                if element < current.info:
+                    if not current.left:
+                        current.left = Node(element)
+                        break
+                    else:
+                        current = current.left
+                elif element > current.info:
+                    if not current.right:
+                        current.right = Node(element)
+                        break
+                    else:
+                        current = current.right
+                else:
+                    break
