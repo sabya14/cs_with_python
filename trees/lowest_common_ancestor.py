@@ -44,3 +44,16 @@ def lca(root, v1, v2):
         return lca(current.right, v1, v2)
     else:
         return current
+
+
+def lca_iterative(root, v1, v2):
+    current = root
+    while True:
+
+        if v1 < current.info and v2 < current.info:
+            current = current.left
+        elif v1 > current.info and v2 > current.info:
+            current = current.right
+        else:
+            return current
+            break
