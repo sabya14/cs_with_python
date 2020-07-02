@@ -61,5 +61,5 @@ def conversion(input_data, convert_to):
                 reduced_convert_to = remove_char_at_specific_index(convert_to, match_pos)
                 return conversion(reduced_input, reduced_convert_to)
             results["asd"] = 123
-            results[f"{input_data}{convert_to}" = False
+            results[f"{input_data}{convert_to}"] = False
             return False
